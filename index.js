@@ -7,9 +7,12 @@ var _ = require('lodash'),
  * @returns {String}        return Date String
  */
 
-module.exports.date = function (customDateFormat) {
+module.exports.date = function (options) {
 
-    var d = new Date();
+    var customDateFormat = options.format || null,
+        d = ((!!options.date) && (options.date.constructor === String)) ? new Date(options.date) : new Date();
+
+    d = ( isNaN(d) === false ) ? d : new Date();
 
     if (customDateFormat === undefined || _.isEmpty(customDateFormat)) {
         customDateFormat = 'Y-M-D H:I:S A'; // 2016-12-12 Monday 01:00:00 AM

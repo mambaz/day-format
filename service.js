@@ -8,8 +8,11 @@ var _ = require('lodash');
  */
 function getDate (date) {
 
-    if (date === undefined || _.isEmpty(date)) 
+    if (date === undefined || !_.isDate(date)) {
         date = new Date();
+    }
+
+    
     return date;
 }
 
@@ -45,7 +48,7 @@ exports.mapYear = function (date, data, indexes, format) {
         return result;
 
     } else {
-        return ''
+        return 'Invalid Date Format';
     }
 }
 
@@ -76,14 +79,14 @@ exports.mapMonth = function (date, data, indexes, format) {
 
         } else {
 
-            m = (m.length < 2) ? ('0' + m) : m;
+            m = (m.toString().length < 2) ? ('0' + m) : m;
             return format.replace(data, m);
 
         }
 
     } else {
 
-        return ''
+        return 'Invalid Date Format';
     }
 
 }
@@ -108,12 +111,12 @@ exports.mapDate = function (date, data, indexes, format) {
 
         } else {
 
-            day = (day.length < 2) ? ('0' + day) : day;
+            day = (day.toString().length < 2) ? ('0' + day) : day;
             return format.replace(data, day);
         }
 
     } else {
-        return ''
+        return 'Invalid Date Format';
     }
 
 }
@@ -133,7 +136,7 @@ exports.mapDay = function (date, data, indexes, format) {
 
     } else {
 
-        return ''
+        return 'Invalid Date Format';
     }
 
 }
@@ -167,7 +170,7 @@ exports.mapHour = function (date, data, indexes, format) {
 
     } else {
 
-        return ''
+        return 'Invalid Date Format';
     }
 
 }
@@ -190,7 +193,7 @@ exports.mapMinutes = function (date, data, indexes, format) {
 
     } else {
 
-        return ''
+        return 'Invalid Date Format';
     }
 
 }
@@ -207,12 +210,13 @@ exports.mapSeconds = function (date, data, indexes, format) {
     if ( data === "S" && r === true && indexesLength === 1) { //DAY
 
         var seconds = date.getSeconds();
+        seconds = (seconds.toString().length < 2) ? ('0' + seconds) : seconds;
 
         return format.replace(data, seconds);
 
     } else {
 
-        return ''
+        return 'Invalid Date Format';
     }
 
 }
@@ -235,7 +239,7 @@ exports.mapMeridiem = function (date, data, indexes, format) {
 
     } else {
 
-        return ''
+        return 'Invalid Date Format';
     }
 
 }
@@ -257,7 +261,7 @@ exports.mapTimestamp = function (date, data, indexes, format) {
 
     } else {
 
-        return ''
+        return 'Invalid Date Format';
     }
 
 }
