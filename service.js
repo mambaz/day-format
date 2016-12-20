@@ -48,7 +48,7 @@ exports.mapYear = function (date, data, indexes, format) {
         return result;
 
     } else {
-        return 'Invalid Date Format';
+        return '';
     }
 }
 
@@ -59,10 +59,6 @@ exports.mapMonth = function (date, data, indexes, format) {
         indexesLength = indexes.length,
         compareData = (indexesLength > 1) ? _.range(_.head(indexes), _.last(indexes)+1) : indexes;
         r = (JSON.stringify(indexes) === JSON.stringify(compareData) ) ? true : false;
-
-    if ( data === "MONTH" ) { //MONTH
-        return format.replace(data, month_name(new Date(date)));
-    }
 
     if (r === true && indexesLength > 0 && indexesLength < 4) { // M, MM, MMM
 
@@ -86,7 +82,19 @@ exports.mapMonth = function (date, data, indexes, format) {
 
     } else {
 
-        return 'Invalid Date Format';
+        return '';
+    }
+
+}
+
+//Return formatted month if date exist
+exports.mapMonthName = function (date, data, format) {
+
+    if ( data === "MONTH" ) { //MONTH
+        return format.replace(data, month_name(new Date(date)));
+    } else {
+
+        return '';
     }
 
 }
@@ -116,7 +124,7 @@ exports.mapDate = function (date, data, indexes, format) {
         }
 
     } else {
-        return 'Invalid Date Format';
+        return '';
     }
 
 }
@@ -136,7 +144,7 @@ exports.mapDay = function (date, data, indexes, format) {
 
     } else {
 
-        return 'Invalid Date Format';
+        return '';
     }
 
 }
@@ -170,7 +178,7 @@ exports.mapHour = function (date, data, indexes, format) {
 
     } else {
 
-        return 'Invalid Date Format';
+        return '';
     }
 
 }
@@ -193,7 +201,7 @@ exports.mapMinutes = function (date, data, indexes, format) {
 
     } else {
 
-        return 'Invalid Date Format';
+        return '';
     }
 
 }
@@ -216,7 +224,7 @@ exports.mapSeconds = function (date, data, indexes, format) {
 
     } else {
 
-        return 'Invalid Date Format';
+        return '';
     }
 
 }
@@ -239,7 +247,7 @@ exports.mapMeridiem = function (date, data, indexes, format) {
 
     } else {
 
-        return 'Invalid Date Format';
+        return '';
     }
 
 }
@@ -261,7 +269,7 @@ exports.mapTimestamp = function (date, data, indexes, format) {
 
     } else {
 
-        return 'Invalid Date Format';
+        return '';
     }
 
 }

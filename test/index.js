@@ -5,8 +5,23 @@ var chai = require('chai'),
     expect = chai.expect,
     n = require('../index.js'),
     dateTest = [
+        {},
+        {
+            format : 'DD-MM-YYYY' // Current Date
+        },
+        {
+            format : 'DD-MM-YYYY h:i:s a l t' // Current Date
+        },
         {
             format : 'Y-MM-DD H:i:s a l',
+            date : '2015-10-24'
+        },
+        {
+            format : 'Y-month-DD H:i:s a l',
+            date : '2015-10-24'
+        },
+        {
+            format : 'Y-mmm-DD H:i:s a l',
             date : '2015-10-24'
         },
         {
@@ -39,10 +54,7 @@ var chai = require('chai'),
         {
             format : 'h:i:s a l',
             date : ''
-        },
-        {
-
-        },
+        },        
         {
             format : 't',
             date : 'Tue Jan 20 2016 15:8:5'

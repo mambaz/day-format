@@ -15,7 +15,7 @@ Installation is easiest through npm:
 
 var n = require('day-format');
 
-// n.date({format:'Y-MM-DD h:i:s a l',date:'Tue Jan 20 2016 15:8:5'}); // 2016-12-19 01:00:00 AM Monday
+// n.date({format:'Y-MM-DD h:i:s a',date:'Tue Jan 20 2016 15:8:5'}); // 2016-01-20 11:18:05 AM
 // 'format' optional fields and 'date' optional fields
 // Year: Y or YY or YYYY  : e.g., 2016 or 16
 // Month: M or MM or MMM or MONTH : e.g., 1 or 01 or Jan or January

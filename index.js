@@ -23,7 +23,7 @@ module.exports.date = function (options) {
     if (customDateFormat) {
 
         customDateFormat = customDateFormat.split(/[^A-Za-z]/);
-
+        var monthName = false;
         customDateFormat.forEach (function(data) {
 
             var yIndices = $.getIndexes (data, 'Y'), // YEAR
@@ -36,24 +36,49 @@ module.exports.date = function (options) {
                 meridiemIndices = $.getIndexes (data, 'A'), // AM/PM
                 timestampIndices = $.getIndexes (data, 'T'); // TIMESTAMP
                 
+                if (!_.isEmpty(yIndices)) {
+                    formatResponse = $.mapYear(d, data, yIndices, formatResponse);
+                }
 
-                formatResponse = (!_.isEmpty(yIndices)) ? $.mapYear(d, data, yIndices, formatResponse) : formatResponse;            
+                if (data === 'MONTH' && monthName === false) {
+                    formatResponse = $.mapMonthName(d, data, formatResponse);
+                    monthName = true;
+                }
 
-                formatResponse = (!_.isEmpty(mIndices)) ? $.mapMonth(d, data, mIndices, formatResponse) : formatResponse;            
+                if (!_.isEmpty(mIndices) && !_.includes(customDateFormat, 'MONTH')) { 
+                    formatResponse = $.mapMonth(d, data, mIndices, formatResponse);
+                }
 
-                formatResponse = (!_.isEmpty(dIndices)) ? $.mapDate(d, data, dIndices, formatResponse) : formatResponse;            
+                if (!_.isEmpty(dIndices)) {
+                    formatResponse = $.mapDate(d, data, dIndices, formatResponse);
+                }
 
-                formatResponse = (!_.isEmpty(dayIndices)) ? $.mapDay(d, data, dayIndices, formatResponse) : formatResponse;            
+                if (!_.isEmpty(dayIndices)) {
+                    formatResponse = $.mapDay(d, data, dayIndices, formatResponse);
+                }
 
-                formatResponse = (!_.isEmpty(hourIndices)) ? $.mapHour(d, data, hourIndices, formatResponse) : formatResponse;            
+                if (!_.isEmpty(hourIndices) && data !== 'MONTH') {
+                    formatResponse = $.mapHour(d, data, hourIndices, formatResponse);
+                }
 
-                formatResponse = (!_.isEmpty(minIndices)) ? $.mapMinutes(d, data, minIndices, formatResponse) : formatResponse;            
+                if (!_.isEmpty(minIndices)) {
+                    formatResponse = $.mapMinutes(d, data, minIndices, formatResponse);
+                }
 
-                formatResponse = (!_.isEmpty(secIndices)) ? $.mapSeconds(d, data, secIndices, formatResponse) : formatResponse;            
+                if (!_.isEmpty(secIndices)) {
+                    formatResponse = $.mapSeconds(d, data, secIndices, formatResponse);
+                }
 
-                formatResponse = (!_.isEmpty(meridiemIndices)) ? $.mapMeridiem(d, data, meridiemIndices, formatResponse) : formatResponse;            
+                if (!_.isEmpty(meridiemIndices)) {
+                    formatResponse = $.mapMeridiem(d, data, meridiemIndices, formatResponse);
+                }
 
-                formatResponse = (!_.isEmpty(timestampIndices)) ? $.mapTimestamp(d, data, timestampIndices, formatResponse) : formatResponse;
+                if (!_.isEmpty(timestampIndices) && data !== 'MONTH') {
+                    formatResponse = $.mapTimestamp(d, data, timestampIndices, formatResponse);
+                }
+                
+
+               
             
 
         });
