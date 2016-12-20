@@ -58,6 +58,14 @@ var chai = require('chai'),
         {
             format : 't',
             date : 'Tue Jan 20 2016 15:8:5'
+        },        
+        {
+            format : 'dfsdfdsfsdf',
+            date : 'fdsgfhsdgf'
+        },        
+        {
+            test : 'dfsdfdsfsdf',
+            testts : 'fdsgfhsdgf'
         }
     ];
 
@@ -67,9 +75,12 @@ describe('##### DATE FORMAT #####', function() {
 
         dateTest.forEach (function (txt) {
             var result = n.date(txt);
+            console.log(txt);
             console.log(result);
             expect(result).to.not.be.null;
         });
     });
 
 });
+
+

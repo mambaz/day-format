@@ -27,15 +27,14 @@ exports.getIndexes = function (str, char) {
 }
 
 //Return formatted year if date exist
-exports.mapYear = function (date, data, indexes, format) {
+exports.mapYear = function (date, data, indexes) {
 
     var date = getDate(date),
-        result,
         indexesLength = indexes.length,
         compareData = (indexesLength > 1) ? _.range(_.head(indexes), _.last(indexes)+1) : indexes;
         r = (JSON.stringify(indexes) === JSON.stringify(compareData) ) ? true : false;
 
-    if (r === true && indexesLength > 0 && indexesLength < 5) {
+    if (r === true && indexesLength > 0) {
 
         var d = new Date(date),
             y = d.getFullYear();
@@ -44,8 +43,7 @@ exports.mapYear = function (date, data, indexes, format) {
             y = y.toString().substr(2,2);
         }
 
-        result = format.replace(data, y);
-        return result;
+        return y;
 
     } else {
         return '';
@@ -53,12 +51,13 @@ exports.mapYear = function (date, data, indexes, format) {
 }
 
 //Return formatted month if date exist
-exports.mapMonth = function (date, data, indexes, format) {
+exports.mapMonth = function (date, data, indexes) {
 
     var date = getDate(date),
         indexesLength = indexes.length,
         compareData = (indexesLength > 1) ? _.range(_.head(indexes), _.last(indexes)+1) : indexes;
-        r = (JSON.stringify(indexes) === JSON.stringify(compareData) ) ? true : false;
+        r = (JSON.stringify(indexes) === JSON.stringify(compareData) ) ? true : false,
+        result = '';
 
     if (r === true && indexesLength > 0 && indexesLength < 4) { // M, MM, MMM
 
@@ -67,18 +66,20 @@ exports.mapMonth = function (date, data, indexes, format) {
 
         if (indexesLength === 1) {
 
-            return format.replace(data, m);
+            result = m;
 
         } else if (indexesLength === 3) {
 
-            return format.replace(data, month_name(new Date(date)).substr(0, 3));
+            result = month_name(new Date(date)).substr(0, 3);
 
         } else {
 
             m = (m.toString().length < 2) ? ('0' + m) : m;
-            return format.replace(data, m);
+            result = m;
 
         }
+
+        return result;
 
     } else {
 
@@ -88,10 +89,10 @@ exports.mapMonth = function (date, data, indexes, format) {
 }
 
 //Return formatted month if date exist
-exports.mapMonthName = function (date, data, format) {
+exports.mapMonthName = function (date, data) {
 
     if ( data === "MONTH" ) { //MONTH
-        return format.replace(data, month_name(new Date(date)));
+        return month_name(new Date(date));
     } else {
 
         return '';
@@ -100,7 +101,7 @@ exports.mapMonthName = function (date, data, format) {
 }
 
 //Return formatted date if date format exist
-exports.mapDate = function (date, data, indexes, format) {
+exports.mapDate = function (date, data, indexes) {
 
     var date = getDate(date),
         indexesLength = indexes.length,
@@ -115,12 +116,12 @@ exports.mapDate = function (date, data, indexes, format) {
 
         if (indexesLength === 1) {
 
-            return format.replace(data, day);
+            return day;
 
         } else {
 
             day = (day.toString().length < 2) ? ('0' + day) : day;
-            return format.replace(data, day);
+            return day;
         }
 
     } else {
@@ -130,7 +131,7 @@ exports.mapDate = function (date, data, indexes, format) {
 }
 
 //Return formatted Day (Sunday to Saturday) if date exist
-exports.mapDay = function (date, data, indexes, format) {
+exports.mapDay = function (date, data, indexes) {
 
     var date = getDate(date),
         indexesLength = indexes.length,
@@ -140,7 +141,7 @@ exports.mapDay = function (date, data, indexes, format) {
 
     if ( data === "L" && r === true && indexesLength > 0 && indexesLength < 2) { //DAY
 
-        return format.replace(data, day_name(new Date(date)));
+        return day_name(new Date(date));
 
     } else {
 
@@ -150,7 +151,7 @@ exports.mapDay = function (date, data, indexes, format) {
 }
 
 //Return formatted hours if date exist
-exports.mapHour = function (date, data, indexes, format) {
+exports.mapHour = function (date, data, indexes) {
 
     var date = getDate(date),
         indexesLength = indexes.length,
@@ -168,11 +169,11 @@ exports.mapHour = function (date, data, indexes, format) {
             hours = hours ? hours : 12; // the hour '0' should be '12'
             hours = hours < 10 ? '0'+hours : hours;
 
-            return format.replace(data, hours);
+            return hours;
 
         } else {
 
-           return format.replace(data, hours);
+           return hours;
 
         }
 
@@ -184,7 +185,7 @@ exports.mapHour = function (date, data, indexes, format) {
 }
 
 //Return formatted minutes if date exist
-exports.mapMinutes = function (date, data, indexes, format) {
+exports.mapMinutes = function (date, data, indexes) {
 
     var date = getDate(date),
         indexesLength = indexes.length,
@@ -197,7 +198,7 @@ exports.mapMinutes = function (date, data, indexes, format) {
         var minutes = date.getMinutes();
         minutes = minutes < 10 ? '0'+minutes : minutes;
 
-        return format.replace(data, minutes);
+        return minutes;
 
     } else {
 
@@ -207,7 +208,7 @@ exports.mapMinutes = function (date, data, indexes, format) {
 }
 
 //Return seconds if date format exist
-exports.mapSeconds = function (date, data, indexes, format) {
+exports.mapSeconds = function (date, data, indexes) {
 
     var date = getDate(date),
         indexesLength = indexes.length,
@@ -220,7 +221,7 @@ exports.mapSeconds = function (date, data, indexes, format) {
         var seconds = date.getSeconds();
         seconds = (seconds.toString().length < 2) ? ('0' + seconds) : seconds;
 
-        return format.replace(data, seconds);
+        return seconds;
 
     } else {
 
@@ -230,7 +231,7 @@ exports.mapSeconds = function (date, data, indexes, format) {
 }
 
 //Return AM/PM
-exports.mapMeridiem = function (date, data, indexes, format) {
+exports.mapMeridiem = function (date, data, indexes) {
 
     var date = getDate(date),
         indexesLength = indexes.length,
@@ -243,7 +244,7 @@ exports.mapMeridiem = function (date, data, indexes, format) {
         var hours = date.getHours(),
             ampm = hours >= 12 ? 'PM' : 'AM';
 
-        return format.replace(data, ampm);
+        return ampm;
 
     } else {
 
@@ -253,7 +254,7 @@ exports.mapMeridiem = function (date, data, indexes, format) {
 }
 
 // Return Timestamp
-exports.mapTimestamp = function (date, data, indexes, format) {
+exports.mapTimestamp = function (date, data, indexes) {
 
     var date = getDate(date),
         indexesLength = indexes.length,
@@ -265,7 +266,7 @@ exports.mapTimestamp = function (date, data, indexes, format) {
 
         var n = date.getTime();
 
-        return format.replace(data, n);
+        return n;
 
     } else {
 
@@ -284,3 +285,18 @@ var month_name = function (dt) {
     mlist = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];  
     return mlist[dt.getMonth()];
 }
+
+exports.finalResponseMapping = function (data, specialChar) {
+    var result = '',
+        i = 0;
+
+    for (var prop in data) {
+
+        var splChar = specialChar[i] || ' ';
+        result = result + data[prop] + splChar;
+        i = i+1;
+
+    }
+    return result.trim();
+}
+

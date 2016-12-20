@@ -23,7 +23,11 @@ module.exports.date = function (options) {
     if (customDateFormat) {
 
         customDateFormat = customDateFormat.split(/[^A-Za-z]/);
-        var monthName = false;
+
+        var splChar = formatResponse.replace(/[A-Za-z]+/g, ''),
+            monthName = false,
+            response = [];
+
         customDateFormat.forEach (function(data) {
 
             var yIndices = $.getIndexes (data, 'Y'), // YEAR
@@ -37,52 +41,33 @@ module.exports.date = function (options) {
                 timestampIndices = $.getIndexes (data, 'T'); // TIMESTAMP
                 
                 if (!_.isEmpty(yIndices)) {
-                    formatResponse = $.mapYear(d, data, yIndices, formatResponse);
-                }
-
-                if (data === 'MONTH' && monthName === false) {
-                    formatResponse = $.mapMonthName(d, data, formatResponse);
+                    response[data] = $.mapYear(d, data, yIndices);
+                } else if (data === 'MONTH' && monthName === false) {
+                    response[data] = $.mapMonthName(d, data);
                     monthName = true;
-                }
-
-                if (!_.isEmpty(mIndices) && !_.includes(customDateFormat, 'MONTH')) { 
-                    formatResponse = $.mapMonth(d, data, mIndices, formatResponse);
-                }
-
-                if (!_.isEmpty(dIndices)) {
-                    formatResponse = $.mapDate(d, data, dIndices, formatResponse);
-                }
-
-                if (!_.isEmpty(dayIndices)) {
-                    formatResponse = $.mapDay(d, data, dayIndices, formatResponse);
-                }
-
-                if (!_.isEmpty(hourIndices) && data !== 'MONTH') {
-                    formatResponse = $.mapHour(d, data, hourIndices, formatResponse);
-                }
-
-                if (!_.isEmpty(minIndices)) {
-                    formatResponse = $.mapMinutes(d, data, minIndices, formatResponse);
-                }
-
-                if (!_.isEmpty(secIndices)) {
-                    formatResponse = $.mapSeconds(d, data, secIndices, formatResponse);
-                }
-
-                if (!_.isEmpty(meridiemIndices)) {
-                    formatResponse = $.mapMeridiem(d, data, meridiemIndices, formatResponse);
-                }
-
-                if (!_.isEmpty(timestampIndices) && data !== 'MONTH') {
-                    formatResponse = $.mapTimestamp(d, data, timestampIndices, formatResponse);
-                }
-                
-
-               
-            
+                } else if (!_.isEmpty(mIndices) && !_.includes(customDateFormat, 'MONTH')) { 
+                    response[data] = $.mapMonth(d, data, mIndices);
+                } else if (!_.isEmpty(dIndices)) {
+                    response[data] = $.mapDate(d, data, dIndices);
+                } else if (!_.isEmpty(dayIndices)) {
+                    response[data] = $.mapDay(d, data, dayIndices);
+                } else if (!_.isEmpty(hourIndices) && data !== 'MONTH') {
+                    response[data] = $.mapHour(d, data, hourIndices);
+                } else if (!_.isEmpty(minIndices)) {
+                    response[data] = $.mapMinutes(d, data, minIndices);
+                } else if (!_.isEmpty(secIndices)) {
+                    response[data] = $.mapSeconds(d, data, secIndices);
+                } else if (!_.isEmpty(meridiemIndices)) {
+                    response[data] = $.mapMeridiem(d, data, meridiemIndices);
+                } else if (!_.isEmpty(timestampIndices) && data !== 'MONTH') {
+                    response[data] = $.mapTimestamp(d, data, timestampIndices);
+                }             
 
         });
+
+
+        var result = $.finalResponseMapping (response, splChar);
         
     }
-    return formatResponse;
+    return result;
 }
