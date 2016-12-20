@@ -7,9 +7,12 @@ var _ = require('lodash'),
  * @returns {String}        return Date String
  */
 
-module.exports.date = function (customDateFormat) {
+module.exports.date = function (options) {
 
-    var d = new Date();
+    var customDateFormat = options.format || null,
+        d = ((!!options.date) && (options.date.constructor === String)) ? new Date(options.date) : new Date();
+
+    d = ( isNaN(d) === false ) ? d : new Date();
 
     if (customDateFormat === undefined || _.isEmpty(customDateFormat)) {
         customDateFormat = 'Y-M-D H:I:S A'; // 2016-12-12 Monday 01:00:00 AM
@@ -20,6 +23,10 @@ module.exports.date = function (customDateFormat) {
     if (customDateFormat) {
 
         customDateFormat = customDateFormat.split(/[^A-Za-z]/);
+
+        var splChar = formatResponse.replace(/[A-Za-z]+/g, ''),
+            monthName = false,
+            response = [];
 
         customDateFormat.forEach (function(data) {
 
@@ -33,28 +40,34 @@ module.exports.date = function (customDateFormat) {
                 meridiemIndices = $.getIndexes (data, 'A'), // AM/PM
                 timestampIndices = $.getIndexes (data, 'T'); // TIMESTAMP
                 
-
-                formatResponse = (!_.isEmpty(yIndices)) ? $.mapYear(d, data, yIndices, formatResponse) : formatResponse;            
-
-                formatResponse = (!_.isEmpty(mIndices)) ? $.mapMonth(d, data, mIndices, formatResponse) : formatResponse;            
-
-                formatResponse = (!_.isEmpty(dIndices)) ? $.mapDate(d, data, dIndices, formatResponse) : formatResponse;            
-
-                formatResponse = (!_.isEmpty(dayIndices)) ? $.mapDay(d, data, dayIndices, formatResponse) : formatResponse;            
-
-                formatResponse = (!_.isEmpty(hourIndices)) ? $.mapHour(d, data, hourIndices, formatResponse) : formatResponse;            
-
-                formatResponse = (!_.isEmpty(minIndices)) ? $.mapMinutes(d, data, minIndices, formatResponse) : formatResponse;            
-
-                formatResponse = (!_.isEmpty(secIndices)) ? $.mapSeconds(d, data, secIndices, formatResponse) : formatResponse;            
-
-                formatResponse = (!_.isEmpty(meridiemIndices)) ? $.mapMeridiem(d, data, meridiemIndices, formatResponse) : formatResponse;            
-
-                formatResponse = (!_.isEmpty(timestampIndices)) ? $.mapTimestamp(d, data, timestampIndices, formatResponse) : formatResponse;
-            
+                if (!_.isEmpty(yIndices)) {
+                    response[data] = $.mapYear(d, data, yIndices);
+                } else if (data === 'MONTH' && monthName === false) {
+                    response[data] = $.mapMonthName(d, data);
+                    monthName = true;
+                } else if (!_.isEmpty(mIndices) && !_.includes(customDateFormat, 'MONTH')) { 
+                    response[data] = $.mapMonth(d, data, mIndices);
+                } else if (!_.isEmpty(dIndices)) {
+                    response[data] = $.mapDate(d, data, dIndices);
+                } else if (!_.isEmpty(dayIndices)) {
+                    response[data] = $.mapDay(d, data, dayIndices);
+                } else if (!_.isEmpty(hourIndices) && data !== 'MONTH') {
+                    response[data] = $.mapHour(d, data, hourIndices);
+                } else if (!_.isEmpty(minIndices)) {
+                    response[data] = $.mapMinutes(d, data, minIndices);
+                } else if (!_.isEmpty(secIndices)) {
+                    response[data] = $.mapSeconds(d, data, secIndices);
+                } else if (!_.isEmpty(meridiemIndices)) {
+                    response[data] = $.mapMeridiem(d, data, meridiemIndices);
+                } else if (!_.isEmpty(timestampIndices) && data !== 'MONTH') {
+                    response[data] = $.mapTimestamp(d, data, timestampIndices);
+                }             
 
         });
+
+
+        var result = $.finalResponseMapping (response, splChar);
         
     }
-    return formatResponse;
+    return result;
 }

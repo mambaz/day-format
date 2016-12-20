@@ -4,107 +4,83 @@ var chai = require('chai'),
     should = chai.should(),
     expect = chai.expect,
     n = require('../index.js'),
-    years = [
-        'Y',
-        'YY',
-        'YYYY',
-        '',
-        'Y-MM-DD H:i:s a l',
-        'HH:i:s',
-        'h:i:s a',
-        'd-m-y',
-        't'
-    ],
-    months = [
-        'M',
-        'MM',
-        'MMM',
-        'month'
-    ],
-    ymd = [
-        'Y-M-D',
-        'YY-MM-D',
-        'YYYY-MMM-DD',
-        'Y-month-DD'
-    ],
-    ymdDay = [
-        'Y-M-D l',
-        'YY-MM-D l',
-        'YYYY-MMM-DD l',
-        'Y-month-DD l'
-    ],
-    all = [
-        'Y-M-D l h:i:s a t',
-        'Y-M-D l hh:i:s a',
-        'YY-MM-D l h:i:s a',
-        'YYYY-MMM-DD l h:i:s a',
-        'Y-month-DD l h:i:s a'
-    ],
-    monthYears = [
-        'Y-M',
-        'Y-MM',
-        'Y-MMM',
-        'Y-month',
-        'YY-M',
-        'YY-MM',
-        'YY-MMM',
-        'YY-month',
-        'YYYY-M',
-        'YYYY-MM',
-        'YYYY-MMM',
-        'YYYY-month'
+    dateTest = [
+        {},
+        {
+            format : 'DD-MM-YYYY' // Current Date
+        },
+        {
+            format : 'DD-MM-YYYY h:i:s a l t' // Current Date
+        },
+        {
+            format : 'Y-MM-DD H:i:s a l',
+            date : '2015-10-24'
+        },
+        {
+            format : 'Y-month-DD H:i:s a l',
+            date : '2015-10-24'
+        },
+        {
+            format : 'Y-mmm-DD H:i:s a l',
+            date : '2015-10-24'
+        },
+        {
+            format : 'Y-MM-D',
+            date : '2016-10-24T00:00:00.000Z'
+        },
+        {
+            format : 'Y-MM-D',
+            date : 'Mon April 23 2012'
+        },
+        {
+            format : 'Y-MM-D h:i:s a',
+            date : 'Tue Jan 20 2016 11:18:05 GMT+0800 (SGT)'
+        },
+        {
+            format : 'Y-MM-D h:i:s a l',
+            date : 'Tue Jan 20 2016 15:8:5'
+        },
+        {
+            format : 'Y-MM-D h:i:s',
+            date : 'test testfsdf sdfsgdf'
+        },
+        {
+            format : 'DD-MM-YYYYYY'
+        },
+        {
+            format : 'h:i:s a l',
+            date : '2015-10-24'
+        },
+        {
+            format : 'h:i:s a l',
+            date : ''
+        },        
+        {
+            format : 't',
+            date : 'Tue Jan 20 2016 15:8:5'
+        },        
+        {
+            format : 'dfsdfdsfsdf',
+            date : 'fdsgfhsdgf'
+        },        
+        {
+            test : 'dfsdfdsfsdf',
+            testts : 'fdsgfhsdgf'
+        }
     ];
-
-
 
 describe('##### DATE FORMAT #####', function() {
 
     it ('GET THE YEAR AND CUSTOM FORMAT', function () {
 
-        years.forEach (function (txt) {
+        dateTest.forEach (function (txt) {
             var result = n.date(txt);
+            console.log(txt);
+            console.log(result);
             expect(result).to.not.be.null;
         });
     });
-
-    it ('GET THE MONTH', function () {
-
-        months.forEach (function (txt) {
-            var result = n.date(txt);
-            expect(result).to.not.be.null;
-        });
-    });
-
-    it ('Get Year and Month', function () {
-
-        monthYears.forEach (function (txt) {
-            var result = n.date(txt);
-            expect(result).to.not.be.null;
-        });
-    });
-
-    it ('Get Year and Month and Date', function () {
-
-        ymd.forEach (function (txt) {
-            var result = n.date(txt);
-            expect(result).to.not.be.null;
-        });
-    });
-
-    it ('Get Year and Month and Date and Day', function () {
-
-        ymdDay.forEach (function (txt) {
-            var result = n.date(txt);
-            expect(result).to.not.be.null;
-        });
-    });
-
-    it ('Get all FORMAT', function () {
-
-        all.forEach (function (txt) {
-            var result = n.date(txt);
-            expect(result).to.not.be.null;
-        });
-    });  
 
 });
+
+
