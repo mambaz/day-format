@@ -1,6 +1,6 @@
 {
   "name": "day-format",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Get the javascript date and time with custom format",
   "main": "index.js",
   "scripts": {
